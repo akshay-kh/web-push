@@ -128,3 +128,32 @@ function updateSubscriptionOnServer(subscription) {
         subscriptionDetails.classList.add('is-invisible');
     }
 }
+
+pushButton.addEventListener('click', function () {
+    pushButton.disabled = true;
+    if (isSubscribed) {
+        unsubscribeUser();
+    } else {
+        subscribeUser();
+    }
+});
+
+function unsubscribeUser() {
+    swRegistration.pushManager.getSubscription()
+        .then(function (subscription) {
+            if (subscription) {
+                return subscription.unsubscribe();
+            }
+        })
+        .catch(function (error) {
+            console.log('Error unsubscribing', error);
+        })
+        .then(function () {
+            updateSubscriptionOnServer(null);
+
+            console.log('User is unsubscribed.');
+            isSubscribed = false;
+
+            updateBtn();
+        });
+}
