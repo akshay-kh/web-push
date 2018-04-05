@@ -16,3 +16,13 @@ self.addEventListener('push', function(event) {
     const notificationPromise = self.registration.showNotification(title, options);
     event.waitUntil(notificationPromise);
 });
+
+self.addEventListener('notificationclick', function(event) {
+    console.log('[Service Worker] Notification click Received.');
+
+    event.notification.close();
+
+    event.waitUntil(
+        clients.openWindow('http://nimitbhargava.com/')
+    );
+});
